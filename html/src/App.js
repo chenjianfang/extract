@@ -38,7 +38,7 @@ function App() {
         data += `\n\n\n重复项：\n${repeatList}`
       }
 
-      message.success('提取成功么么哒💋💋💋');
+      message.success('提取成功!');
     }
 
     setExtractStr(data);
@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="App" style={{margin: '20px'}}>
-      <Row justify="space-around" align="top">
+      <Row justify="space-around" align="middle">
         <Col span={15}>
           <TextArea rows={30} value={str} onChange={(e) => setStr(e.target.value)} />
         </Col>
@@ -54,7 +54,7 @@ function App() {
           <Button type="primary" onClick={extractClick}>提取</Button>
         </Col>
         <Col span={7}>
-          <TextArea rows={60} value={extractStr} onChange={(e) => setExtractStr(e.target.value)}  />
+          <TextArea rows={30} value={extractStr} onChange={(e) => setExtractStr(e.target.value)}  />
         </Col>
       </Row>
     </div>
