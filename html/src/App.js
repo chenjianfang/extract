@@ -1,14 +1,19 @@
-import { useState } from 'react';
-import { Row, Col, Input, Button, message } from 'antd';
+import { useState, useEffect } from 'react';
+import { Row, Col, Input, Button, message, Modal, Space, Divider } from 'antd';
+import { diffChars, diffWords } from 'diff';
 import { post } from './http';
 
 const { TextArea } = Input;
 
 const extractPost = (params) => post('/extract', params);
 
+const buttonStyle = {display: 'flex', justifyContent: 'center', alignItems: 'center'}
+
 function App() {
   const [str, setStr] = useState('');
   const [extractStr, setExtractStr] = useState('');
+  const [diffStr, setDiffStr] = useState([]);
+  const [show, setShow] = useState(false);
 
   const extractClick = async () => {
     if (!str) {
@@ -44,19 +49,42 @@ function App() {
     setExtractStr(data);
   }
 
+  useEffect(() => {
+    const diff = diffChars(str, extractStr);
+
+    console.log(diff);
+    setDiffStr(diff);
+  }, [str, extractStr]);
+
   return (
     <div className="App" style={{margin: '20px'}}>
       <Row justify="space-around" align="middle">
         <Col span={15}>
           <TextArea rows={30} value={str} onChange={(e) => setStr(e.target.value)} />
         </Col>
-        <Col span={1}>
-          <Button type="primary" onClick={extractClick}>提取</Button>
+        <Col span={2} style={buttonStyle}>
+          <Space size="small" direction="vertical">
+            <Button type="primary" onClick={extractClick}>提取</Button>
+            <Button type="primary" onClick={() => setShow(true)}>对比</Button>
+          </Space>
         </Col>
         <Col span={7}>
           <TextArea rows={30} value={extractStr} onChange={(e) => setExtractStr(e.target.value)}  />
         </Col>
       </Row>
+
+      <Modal visible={show} footer={null} onCancel={() => setShow(false)}>
+        <div>红色代表生成后没有源字符</div>
+        <Divider></Divider>
+        {
+          diffStr.map((part, index) => {
+            const color = part.removed ? 'red' : 'grey';
+
+            return <span style={{color}} key={index}>{part.value}</span>
+          })
+        }
+
+      </Modal>
     </div>
   );
 }
