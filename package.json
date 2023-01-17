@@ -4,7 +4,8 @@
   "description": "文字提取",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node pm2/pm2-control.js",
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",

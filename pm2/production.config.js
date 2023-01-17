@@ -1,10 +1,13 @@
+
+const cwd = process.cwd();
+
 module.exports = {
   name: 'server-extract',
   script: './index.js',
-  cwd: '/data/release/extract',
+  cwd: cwd,
   env: {
     NODE_ENV: 'production',
   },
-  error_file: '/data/logs/server-extract.err.log',
-  out_file: '/data/logs/server-extract.out.log',
+  error_file: `${cwd}/logs/server-extract.err.log`,
+  out_file: `${cwd}/logs/server-extract.out.log`,
 };
